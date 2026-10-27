@@ -1,0 +1,144 @@
+<!DOCTYPE html><html lang="fr"><head><base target="_blank">
+<title>Préinscription · Candidat maths CRPE 2027 · la prof Julie</title>
+<meta name="robots" content="noindex">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fbfaf7;--s:#fff;--fg:#1e1b24;--mu:#615a6b;--li:#e4dfe9;--ac:#8e00ba;--acs:#f3e6f8;--ok:#2f7d3a;--oks:#e4f2e1;--ko:#c62828;--sh:#c9d6ef;--sv:#efc4cf}
+@media (prefers-color-scheme:dark){:root{--bg:#16131a;--s:#1f1a25;--fg:#efeaf3;--mu:#aaa0b4;--li:#342c3c;--ac:#d38af2;--acs:#3a2346;--ok:#86cf8f;--oks:#1d3121;--ko:#f08a8a;--sh:#26324a;--sv:#4a2630;color-scheme:dark}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 'Open Sans',system-ui,sans-serif}
+.tete{padding:28px 16px 22px;border-bottom:1px solid var(--li);background-image:linear-gradient(90deg,transparent 46px,var(--sv) 46px,var(--sv) 48px,transparent 48px),repeating-linear-gradient(0deg,var(--sh) 0 1px,transparent 1px 32px)}
+.tete .int,.corps{max-width:760px;margin:0 auto;padding-left:44px}
+.corps{padding:24px 16px 48px;display:flex;flex-direction:column;gap:18px}
+.eyebrow{font-size:.76rem;letter-spacing:.09em;text-transform:uppercase;font-weight:700;color:var(--ac)}
+h1{font-size:1.7rem;font-weight:800;margin:6px 0;line-height:1.15}h2{font-size:1.1rem;margin:0 0 8px}p{margin:0}
+.bloc{background:var(--s);border:1px solid var(--li);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.num{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;border:2px solid var(--ac);color:var(--ac);font-weight:800;margin-right:8px;font-size:.9rem}
+label{font-weight:600;font-size:.92rem}
+input[type=text],input[type=email],input[type=tel],select,textarea{font:inherit;color:var(--fg);background:var(--bg);border:1px solid var(--li);border-radius:8px;padding:10px;width:100%}
+.deux{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}.deux>div{display:flex;flex-direction:column;gap:4px;min-width:0}
+.offres{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px}
+.offre{border:2px solid var(--li);border-radius:10px;padding:10px;cursor:pointer;display:flex;justify-content:space-between;gap:8px;align-items:center}
+.offre input{position:absolute;opacity:0}.offre b{white-space:nowrap}
+.offre:has(input:checked){border-color:var(--ac);background:var(--acs)}
+.choix{display:flex;flex-direction:column;gap:6px}.choix label{font-weight:400;display:flex;gap:8px;align-items:flex-start}
+.choix input{margin-top:5px}
+.themes{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:4px 12px;font-size:.92rem}
+.sous{color:var(--mu);font-size:.88rem}
+.conditions{white-space:pre-line;font-size:.9rem;color:var(--mu);background:var(--bg);border-radius:8px;padding:10px}
+.btn{font:700 1rem 'Open Sans',sans-serif;border:0;border-radius:10px;padding:13px 22px;background:var(--ac);color:#fff;cursor:pointer;width:fit-content}
+.btn:disabled{opacity:.5}.err{color:var(--ko);min-height:1.2em}
+.merci{background:var(--oks);border-radius:14px;padding:20px}
+:focus-visible{outline:3px solid var(--ac);outline-offset:2px}
+@media (max-width:520px){.tete .int,.corps{padding-left:16px}.tete{background-image:repeating-linear-gradient(0deg,var(--sh) 0 1px,transparent 1px 32px)}}
+.themes label{font-weight:400;display:flex;gap:8px;align-items:flex-start;padding:3px 0}
+input[type=checkbox],input[type=radio]{width:18px;height:18px;flex:0 0 auto;margin-top:3px;accent-color:var(--ac)}
+@media (max-width:520px){.btn{width:100%}.offre{padding:12px}}
+[hidden]{display:none!important}
+</style></head><body>
+<header class="tete"><div class="int"><div class="eyebrow">Candidat maths CRPE 2027</div><h1>Préinscription aux évaluations</h1>
+<p class="sous">2 minutes, sans engagement et sans paiement. Je te réponds ensuite par e-mail.</p></div></header>
+<form class="corps" id="fCode" novalidate>
+  <div class="bloc"><h2>Connexion</h2>
+    <p class="sous">L'inscription est ouverte sur invitation. Connecte-toi avec ton adresse Gmail et le code personnel que je t'ai donné : il te sert de mot de passe.</p>
+    <div class="deux"><div><label for="loginEmail">Adresse Gmail</label><input type="email" id="loginEmail" placeholder="prenom@gmail.com" autocomplete="username" required></div>
+    <div><label for="code">Code personnel</label><input type="text" id="code" placeholder="CRPE-XXX-XXX" autocomplete="current-password" style="text-transform:uppercase;letter-spacing:.08em"></div></div>
+    <p class="sous">À ta première connexion, ton code est lié à cette adresse : vérifie-la bien. Tes évaluations ne s'ouvriront qu'avec elle.</p>
+    <div class="err" id="errCode" role="alert"></div>
+    <button class="btn" id="goCode" type="submit">Me connecter</button>
+    <p class="sous">Pas de code ? Écris-moi simplement sur WhatsApp.</p></div>
+</form>
+<form class="corps" id="f" novalidate hidden>
+  <div class="bloc"><h2><span class="num">1</span>Toi</h2>
+    <div class="deux"><div><label for="client">Prénom et initiale du nom</label><input type="text" id="client" placeholder="Léa M." required></div>
+    <div><label for="tel">Téléphone (WhatsApp de préférence)</label><input type="tel" id="tel" placeholder="06 12 34 56 78" required></div></div>
+    <div class="deux"><div><label for="email">Adresse Gmail</label><input type="email" id="email" readonly required style="opacity:.75"></div><input type="hidden" id="email2"></div>
+    <p class="sous">Tes évaluations ne s'ouvriront qu'avec cette adresse Gmail. Ton numéro sert seulement en cas de problème.</p></div>
+  <div class="bloc"><h2><span class="num">2</span>Ton offre</h2><p class="sous" style="margin-bottom:8px">Plusieurs formules t'intéressent ? Préinscris-toi à une formule à la fois : à la fin, un bouton te permet d'ajouter la suivante. Tu peux aussi revenir plus tard : connecte-toi avec la même adresse et le même code.</p><div class="offres" id="offres"><p class="sous">Chargement…</p></div></div>
+  <div class="bloc" id="blocChoix" hidden><h2><span class="num">3</span>Ton évaluation</h2>
+    <div><label>Ta sélection</label><p class="sous" id="aideSel"></p><div class="choix" id="selection"></div></div>
+    <div id="zoneThemes"><label>Les thèmes qui t'intéressent</label><p class="sous">Coche tout ce qui t'intéresse : je te préviens dès la sortie, et pour un pack on suit cet ordre.</p><div class="themes" id="themes"></div></div>
+    <div id="zoneSuite" hidden><label>Pour ton pack, la suite</label><div class="choix" id="suite"></div></div>
+    <div id="zoneDebut"><label for="debut">Quand veux-tu commencer ?</label><p class="sous" id="aideDebut"></p><select id="debut" style="font:inherit;padding:10px;border:1px solid var(--li);border-radius:10px;width:100%;background:#fff"></select></div>
+    <div><label for="remarques">Tes dates, thèmes ou remarques (facultatif)</label><textarea id="remarques" rows="2"></textarea></div></div>
+  <div class="bloc"><h2><span class="num">4</span>Conditions</h2><div class="conditions" id="conditions"></div>
+    <label style="font-weight:400;display:flex;gap:8px"><input type="checkbox" id="cond"> J'ai lu et j'accepte les conditions ci-dessus.</label>
+    <label style="font-weight:400;display:flex;gap:8px"><input type="checkbox" id="accord"> J'accepte que mon prénom, mon adresse e-mail et mon téléphone servent au suivi de mes évaluations.</label></div>
+  <div class="err" id="err" role="alert"></div>
+  <button class="btn" id="go" type="submit">Je me préinscris</button>
+</form>
+<div class="corps" id="ferme" hidden><div class="bloc"><h2>Préinscriptions fermées pour le moment</h2><p>Les préinscriptions rouvrent bientôt. Une question ? Écris-moi à <a href="mailto:contact@laprofjulie.fr" target="_self">contact@laprofjulie.fr</a>.</p></div></div>
+<div class="corps" id="merci" hidden><div class="merci"><h2>Merci, ta préinscription est bien reçue !</h2>
+<p>Tu vas recevoir un e-mail de confirmation de préinscription. Je te réponds ensuite par e-mail ; dès confirmation de ton inscription, tu reçois le lien de ton évaluation dans un nouvel e-mail.</p>
+<p style="margin-top:8px">📩 Tu ne vois pas mes e-mails ? Regarde dans tes spams ou l'onglet Promotions, et ajoute-moi à tes contacts.</p>
+<p style="margin-top:12px"><b>Une autre formule t'intéresse aussi ?</b> Préinscris-toi aussi à celle-ci : tes coordonnées restent remplies.</p>
+<button class="btn" type="button" id="autreFormule" style="margin-top:8px">Me préinscrire à une autre formule</button></div></div>
+<script>
+const $ = s => document.querySelector(s);
+// La page est hébergée sur evaluations.laprofjulie.fr ; elle envoie tout au script Google (même tableur, mêmes e-mails).
+const API = 'https://script.google.com/macros/s/AKfycbzKymMJ7GldqU07h_aNvAC1JZvP-33JgxQtxA7FOe4LCyQWX67ZfD7EAwGY0sBujhzKiQ/exec';
+const run = (f, ...a) => fetch(API, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ f: f, a: a }) })
+  .then(r => r.json()).then(x => { if (!x.ok) throw new Error(x.err || 'Erreur'); return x.r; });
+const euros = n => n.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' });
+let D = null;
+function opt(type, name, value, txt, checked) { const l = document.createElement('label'); const i = document.createElement('input'); i.type = type; i.name = name; i.value = value; if (checked) i.checked = true; l.append(i, document.createTextNode(' ' + txt)); return l; }
+function choisirOffre(o) {
+  $('#blocChoix').hidden = false;
+  const dispo = D.dispo.filter(c => c.type === o.type);
+  $('#aideSel').textContent = dispo.length ? dispo.length + (dispo.length > 1 ? ' disponibles' : ' disponible') + " aujourd'hui." : 'Rien de disponible pour le moment : je te préviens dès la sortie.';
+  const sel = $('#selection'); sel.innerHTML = '';
+  if (dispo.length) dispo.forEach((c, i) => sel.append(opt('radio', 'sel', c.ref + (c.theme ? ' · ' + c.theme : ''), c.ref + (c.theme ? ' · ' + c.theme : ''), i === 0)));
+  else sel.append(opt('radio', 'sel', D.pasDispo, D.pasDispo, true));
+  const th = D.themes.filter(t => t.type === o.type && t.theme);
+  $('#zoneThemes').hidden = !th.length || /sujet blanc/i.test(o.type);
+  const z = $('#themes'); z.innerHTML = ''; th.forEach(t => z.append(opt('checkbox', 'theme', t.theme, t.theme)));
+  const pack = /pack|[2-9] |10 /i.test(o.nom);
+  $('#zoneSuite').hidden = !pack;
+  const s = $('#suite'); s.innerHTML = ''; [D.suiteSortie, D.suiteDates].forEach((t, i) => s.append(opt('radio', 'suite', t, t, i === 0)));
+  // Date de début souhaitée : sujets blancs Bac +3 à partir du 26/10/2026 et Bac +5 à partir du 2/11/2026, toutes les deux semaines ; quiz et contrôles chaque lundi ; jusqu'au concours
+  const blanc = /sujet blanc/i.test(o.type), fin = new Date(2027, 2, 29), demain = new Date(new Date().toDateString()); demain.setDate(demain.getDate() + 1);
+  const sel2 = $('#debut'); sel2.innerHTML = '';
+  const ajoute = (v, t) => { const x = document.createElement('option'); x.value = v; x.textContent = t; sel2.append(x); };
+  ajoute('', 'Choisis une date (ou « je ne sais pas encore »)'); ajoute('?', 'Je ne sais pas encore');
+  for (let d = new Date(2026, 9, blanc && /[+] ?5/.test(o.type) ? 33 : 26); d <= fin; d.setDate(d.getDate() + (blanc ? 14 : 7)))
+    if (d >= demain) ajoute(d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'),
+      d.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }));
+  $('#aideDebut').textContent = blanc ? 'Les sujets blancs sortent toutes les deux semaines (Bac +3 et Bac +5 en alternance, une semaine sur deux). Pour un pack, choisis la date du premier ; tu peux écrire les suivantes dans les remarques. Je te confirme ensuite les dates.'
+    : 'Le lundi où tu veux recevoir ton premier ' + (/quiz/i.test(o.type) ? 'quiz' : 'contrôle') + '. Je te confirme ensuite la date.';
+}
+run('etatPreinscription').then(e => { if (e && e.ouvert === false) { $('#fCode').hidden = true; $('#f').hidden = true; $('#ferme').hidden = false; } }).catch(() => {});
+run('donneesInscription').then(d => {
+  D = d; $('#conditions').textContent = d.conditions;
+  const z = $('#offres'); z.innerHTML = '';
+  d.offres.forEach((o, i) => {
+    const l = document.createElement('label'); l.className = 'offre';
+    const r = document.createElement('input'); r.type = 'radio'; r.name = 'offre'; r.value = o.nom; r.id = 'o' + i; r.onchange = () => choisirOffre(o);
+    const n = document.createElement('span'); n.textContent = o.nom; const p = document.createElement('b'); p.textContent = euros(o.prix);
+    l.append(r, n, p); z.append(l);
+  });
+}).catch(() => { $('#offres').textContent = 'Le formulaire ne se charge pas. Recharge la page.'; });
+let CODE = '';
+$('#fCode').onsubmit = async e => {
+  e.preventDefault(); $('#errCode').textContent = ''; $('#goCode').disabled = true;
+  const mail = $('#loginEmail').value.trim().toLowerCase();
+  if (!/^[^@\s]+@[^@\s]+\.[a-z]{2,}$/.test(mail)) { $('#errCode').textContent = 'Entre ton adresse Gmail.'; $('#goCode').disabled = false; return; }
+  if (!$('#code').value.trim()) { $('#errCode').textContent = 'Entre ton code personnel.'; $('#goCode').disabled = false; return; }
+  try { await run('ouvrirPreinscription', $('#code').value, mail); CODE = $('#code').value.trim().toUpperCase(); $('#email').value = mail; $('#email2').value = mail; $('#fCode').hidden = true; $('#f').hidden = false; window.scrollTo(0, 0); }
+  catch (x) { $('#errCode').textContent = x.message || 'Code refusé.'; }
+  finally { $('#goCode').disabled = false; }
+};
+try { const c = new URLSearchParams(location.search).get('code'); if (c) $('#code').value = c; } catch (e) {}
+$('#f').onsubmit = async e => {
+  e.preventDefault(); $('#err').textContent = '';
+  const v = n => { const x = document.querySelector('input[name="' + n + '"]:checked'); return x ? x.value : ''; };
+  if ($('#email').value.trim().toLowerCase() !== $('#email2').value.trim().toLowerCase()) { $('#err').textContent = 'Les deux adresses e-mail ne sont pas identiques.'; return; }
+  const d = { client: $('#client').value, tel: $('#tel').value, email: $('#email').value, offre: v('offre'), selection: v('sel'),
+    themes: [...document.querySelectorAll('input[name="theme"]:checked')].map(x => x.value), suite: $('#zoneSuite').hidden ? '' : v('suite'),
+    remarques: $('#remarques').value, debut: $('#debut').value, code: CODE, conditions: $('#cond').checked, accord: $('#accord').checked };
+  $('#go').disabled = true; $('#go').textContent = 'Envoi…';
+  try { await run('inscriptionCandidat', d); $('#f').hidden = true; $('#merci').hidden = false; window.scrollTo(0, 0); $('#autreFormule').onclick = () => { $('#merci').hidden = true; $('#f').hidden = false; $('#go').disabled = false; $('#go').textContent = 'Je me préinscris'; document.querySelectorAll('input[name="offre"]:checked').forEach(x => { x.checked = false; x.dispatchEvent(new Event('change', { bubbles: true })); }); window.scrollTo(0, 0); }; }
+  catch (x) { $('#err').textContent = x.message || 'Envoi impossible.'; $('#go').disabled = false; $('#go').textContent = "Je me préinscris"; }
+};
+</script>
+<footer style="text-align:center;color:var(--mu);font-size:.8rem;padding:0 16px 28px">© 2026 la prof Julie · @la_prof_julie · <a href="mailto:contact@laprofjulie.fr" target="_self" style="color:inherit">contact@laprofjulie.fr</a></footer>
+</body></html>
