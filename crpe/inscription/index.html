@@ -27,7 +27,7 @@ input[type=text],input[type=email],input[type=tel],select,textarea{font:inherit;
 .sous{color:var(--mu);font-size:.88rem}
 .conditions{white-space:pre-line;font-size:.9rem;color:var(--mu);background:var(--bg);border-radius:8px;padding:10px}
 .btn{font:700 1rem 'Open Sans',sans-serif;border:0;border-radius:10px;padding:13px 22px;background:var(--ac);color:#fff;cursor:pointer;width:fit-content}
-.btn:disabled{opacity:.5}.err{color:var(--ko);min-height:1.2em}
+.btn:disabled{opacity:.5}.btn.sec{background:var(--s);color:var(--ac);border:2px solid var(--ac)}.err{color:var(--ko);min-height:1.2em}
 .merci{background:var(--oks);border-radius:14px;padding:20px}
 :focus-visible{outline:3px solid var(--ac);outline-offset:2px}
 @media (max-width:520px){.tete .int,.corps{padding-left:16px}.tete{background-image:repeating-linear-gradient(0deg,var(--sh) 0 1px,transparent 1px 32px)}}
@@ -46,8 +46,31 @@ input[type=checkbox],input[type=radio]{width:18px;height:18px;flex:0 0 auto;marg
     <p class="sous">À ta première connexion, ton code est lié à cette adresse : vérifie-la bien. Tes évaluations ne s'ouvriront qu'avec elle.</p>
     <div class="err" id="errCode" role="alert"></div>
     <button class="btn" id="goCode" type="submit">Me connecter</button>
-    <p class="sous">Pas de code ? Écris-moi simplement sur WhatsApp.</p></div>
+    <button class="btn sec" id="versSans" type="button">Je n'ai pas de code</button></div>
 </form>
+<form class="corps" id="fSans" novalidate hidden>
+  <div class="bloc"><h2>Préinscription sans code</h2>
+    <p class="sous">Remplis ce formulaire : je t'envoie par e-mail ton code personnel. Avec ton adresse Gmail, il te servira de mot de passe pour tes quiz et pour choisir ta formule.</p>
+    <div class="deux"><div><label for="sClient">Prénom et initiale du nom</label><input type="text" id="sClient" placeholder="Léa M." autocomplete="name" required></div>
+    <div><label for="sEmail">Adresse Gmail</label><input type="email" id="sEmail" placeholder="prenom@gmail.com" autocomplete="email" required></div></div>
+    <div class="deux"><div><label for="sTel">Téléphone WhatsApp (facultatif)</label><input type="tel" id="sTel" placeholder="06 12 34 56 78" autocomplete="tel"></div><div></div></div>
+    <p class="sous">Tes évaluations ne s'ouvriront qu'avec cette adresse Gmail.</p></div>
+  <div class="bloc"><h2>Ton concours</h2>
+    <div class="choix"><label><input type="radio" name="sConcours" value="Bac +3"> CRPE Bac +3</label><label><input type="radio" name="sConcours" value="Bac +5"> CRPE Bac +5</label></div></div>
+  <div class="bloc"><h2>Ce qui t'intéresse</h2><p class="sous">Plusieurs choix possibles.</p>
+    <div class="choix"><label><input type="checkbox" name="sInteret" value="Quiz"> Les quiz autocorrigés</label><label><input type="checkbox" name="sInteret" value="Contrôles d'1 h"> Les contrôles d'1 h corrigés</label><label><input type="checkbox" name="sInteret" value="Sujets blancs"> Les sujets blancs corrigés</label></div></div>
+  <div class="bloc"><h2>Conditions</h2><div class="conditions" id="sConditions">Chargement…</div>
+    <label style="font-weight:400;display:flex;gap:8px"><input type="checkbox" id="sCond"> J'ai lu et j'accepte les conditions ci-dessus.</label>
+    <label style="font-weight:400;display:flex;gap:8px"><input type="checkbox" id="sAccord"> J'accepte de recevoir les e-mails sur les évaluations maths du CRPE (mon code, les sorties, les offres). Je peux me désinscrire à tout moment.</label></div>
+  <div class="err" id="sErr" role="alert"></div>
+  <button class="btn" id="sGo" type="submit">Recevoir mon code</button>
+  <button class="btn sec" id="versCode" type="button">J'ai déjà un code</button>
+</form>
+<div class="corps" id="merciSans" hidden><div class="merci"><h2>C'est noté !</h2>
+<p>Ton code personnel arrive par e-mail dans quelques minutes, sur l'adresse <b id="sMailOk"></b>.</p>
+<p style="margin-top:8px">📩 Tu ne le vois pas ? Regarde dans tes spams ou l'onglet Promotions, et ajoute-moi à tes contacts.</p>
+<p style="margin-top:12px">Avec ton adresse Gmail et ce code, tu pourras faire tes quiz et choisir ta formule.</p>
+<button class="btn" type="button" id="versCode2" style="margin-top:8px">J'ai reçu mon code : me connecter</button></div></div>
 <form class="corps" id="f" novalidate hidden>
   <div class="bloc"><h2><span class="num">1</span>Toi</h2>
     <div class="deux"><div><label for="client">Prénom et initiale du nom</label><input type="text" id="client" placeholder="Léa M." required></div>
@@ -106,7 +129,7 @@ function choisirOffre(o) {
   $('#aideDebut').textContent = blanc ? 'Les sujets blancs sortent toutes les deux semaines (Bac +3 et Bac +5 en alternance, une semaine sur deux). Pour un pack, choisis la date du premier ; tu peux écrire les suivantes dans les remarques. Je te confirme ensuite les dates.'
     : 'Le lundi où tu veux recevoir ton premier ' + (/quiz/i.test(o.type) ? 'quiz' : 'contrôle') + '. Je te confirme ensuite la date.';
 }
-run('etatPreinscription').then(e => { if (e && e.ouvert === false) { $('#fCode').hidden = true; $('#f').hidden = true; $('#ferme').hidden = false; } }).catch(() => {});
+run('etatPreinscription').then(e => { if (e && e.ouvert === false) { $('#fCode').hidden = true; $('#f').hidden = true; $('#fSans').hidden = true; $('#ferme').hidden = false; } }).catch(() => {});
 run('donneesInscription').then(d => {
   D = d; $('#conditions').textContent = d.conditions;
   const z = $('#offres'); z.innerHTML = '';
@@ -128,7 +151,27 @@ $('#fCode').onsubmit = async e => {
   catch (x) { $('#errCode').textContent = x.message || 'Code refusé.'; }
   finally { $('#goCode').disabled = false; }
 };
-try { const c = new URLSearchParams(location.search).get('code'); if (c) $('#code').value = c; } catch (e) {}
+let SRC = '';
+try { const q = new URLSearchParams(location.search); const c = q.get('code'); if (c) $('#code').value = c; SRC = (q.get('src') || '').toLowerCase().replace(/[^a-z0-9_-]/g, '').slice(0, 40); if (q.has('sans-code') && !c) montrerSans(); } catch (e) {}
+function montrerSans() { $('#fCode').hidden = true; $('#merciSans').hidden = true; $('#fSans').hidden = false; window.scrollTo(0, 0);
+  if ($('#sConditions').textContent === 'Chargement…') run('donneesSansCode').then(d => { $('#sConditions').textContent = d.conditions; }).catch(() => { $('#sConditions').textContent = 'Les conditions ne se chargent pas. Recharge la page.'; }); }
+function montrerCode() { $('#fSans').hidden = true; $('#merciSans').hidden = true; $('#fCode').hidden = false; window.scrollTo(0, 0); }
+$('#versSans').onclick = montrerSans; $('#versCode').onclick = montrerCode; $('#versCode2').onclick = () => { $('#loginEmail').value = $('#sEmail').value.trim().toLowerCase(); montrerCode(); $('#code').focus(); };
+$('#fSans').onsubmit = async e => {
+  e.preventDefault(); const err = $('#sErr'); err.textContent = '';
+  const mail = $('#sEmail').value.trim().toLowerCase();
+  const conc = document.querySelector('input[name="sConcours"]:checked');
+  if (!$('#sClient').value.trim()) { err.textContent = 'Indique ton prénom et l\'initiale de ton nom.'; return; }
+  if (!/@(gmail|googlemail)\.com$/.test(mail)) { err.textContent = 'Entre une adresse Gmail (…@gmail.com) : tes évaluations ne s\'ouvriront qu\'avec un compte Google.'; return; }
+  if (!conc) { err.textContent = 'Choisis le concours visé : Bac +3 ou Bac +5.'; return; }
+  if (!$('#sCond').checked || !$('#sAccord').checked) { err.textContent = 'Coche les deux cases pour continuer.'; return; }
+  const d = { client: $('#sClient').value, email: mail, tel: $('#sTel').value, concours: conc.value,
+    interets: [...document.querySelectorAll('input[name="sInteret"]:checked')].map(x => x.value), src: SRC, conditions: true, accord: true };
+  $('#sGo').disabled = true; $('#sGo').textContent = 'Envoi…';
+  try { await run('preinscriptionSansCode', d); $('#sMailOk').textContent = mail; $('#fSans').hidden = true; $('#merciSans').hidden = false; window.scrollTo(0, 0); }
+  catch (x) { err.textContent = x.message || 'Envoi impossible.'; }
+  finally { $('#sGo').disabled = false; $('#sGo').textContent = 'Recevoir mon code'; }
+};
 $('#f').onsubmit = async e => {
   e.preventDefault(); $('#err').textContent = '';
   const v = n => { const x = document.querySelector('input[name="' + n + '"]:checked'); return x ? x.value : ''; };
