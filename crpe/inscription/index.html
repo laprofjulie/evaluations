@@ -156,7 +156,7 @@ $('#fCode').onsubmit = async e => {
 let SRC = '';
 try { const q = new URLSearchParams(location.search); const c = q.get('code'); if (c) $('#code').value = c; SRC = (q.get('src') || '').toLowerCase().replace(/[^a-z0-9_-]/g, '').slice(0, 40); if (q.has('sans-code') && !c) montrerSans(); } catch (e) {}
 function montrerSans() { $('#fCode').hidden = true; $('#merciSans').hidden = true; $('#fSans').hidden = false; window.scrollTo(0, 0);
-  if ($('#sConditions').textContent === 'Chargement…') run('donneesSansCode').then(d => { $('#sConditions').textContent = d.conditions; }).catch(() => { $('#sConditions').textContent = 'Les conditions ne se chargent pas. Recharge la page.'; }); }
+  if ($('#sConditions').textContent === 'Chargement…') run('donneesSansCode').catch(() => run('donneesInscription')).then(d => { $('#sConditions').textContent = d.conditions; }).catch(() => { $('#sConditions').textContent = 'Les conditions ne se chargent pas. Recharge la page.'; }); }
 function montrerCode() { $('#fSans').hidden = true; $('#merciSans').hidden = true; $('#fCode').hidden = false; window.scrollTo(0, 0); }
 $('#versSans').onclick = montrerSans; $('#versCode').onclick = montrerCode; $('#versCode2').onclick = () => { $('#loginEmail').value = $('#sEmail').value.trim().toLowerCase(); montrerCode(); $('#code').focus(); };
 $('#fSans').onsubmit = async e => {
