@@ -41,7 +41,7 @@ input[type=checkbox],input[type=radio]{width:18px;height:18px;flex:0 0 auto;marg
 <form class="corps" id="fCode" novalidate>
   <div class="bloc"><h2>Connexion</h2>
     <p class="sous">L'inscription est ouverte sur invitation. Connecte-toi avec ton adresse Gmail et le code personnel que je t'ai donné : il te sert de mot de passe.</p>
-    <div class="deux"><div><label for="loginEmail">Adresse Gmail</label><input type="email" id="loginEmail" placeholder="prenom@gmail.com" autocomplete="username" required></div>
+    <div class="deux"><div><label for="loginEmail">Adresse Gmail</label><input type="email" id="loginEmail" placeholder="prenom@gmail.com" autocomplete="username" pattern=".+@gmail\.com" required></div>
     <div><label for="code">Code personnel</label><input type="text" id="code" placeholder="CRPE-XXX-XXX" autocomplete="current-password" style="text-transform:uppercase;letter-spacing:.08em"></div></div>
     <p class="sous">À ta première connexion, ton code est lié à cette adresse : vérifie-la bien. Tes évaluations ne s'ouvriront qu'avec elle.</p>
     <div class="err" id="errCode" role="alert"></div>
@@ -122,6 +122,7 @@ $('#fCode').onsubmit = async e => {
   e.preventDefault(); $('#errCode').textContent = ''; $('#goCode').disabled = true;
   const mail = $('#loginEmail').value.trim().toLowerCase();
   if (!/^[^@\s]+@[^@\s]+\.[a-z]{2,}$/.test(mail)) { $('#errCode').textContent = 'Entre ton adresse Gmail.'; $('#goCode').disabled = false; return; }
+  if (!/@(gmail|googlemail)\.com$/.test(mail)) { $('#errCode').textContent = 'Entre une adresse Gmail (…@gmail.com) : tes évaluations ne s\'ouvriront qu\'avec un compte Google.'; $('#goCode').disabled = false; return; }
   if (!$('#code').value.trim()) { $('#errCode').textContent = 'Entre ton code personnel.'; $('#goCode').disabled = false; return; }
   try { await run('ouvrirPreinscription', $('#code').value, mail); CODE = $('#code').value.trim().toUpperCase(); $('#email').value = mail; $('#email2').value = mail; $('#fCode').hidden = true; $('#f').hidden = false; window.scrollTo(0, 0); }
   catch (x) { $('#errCode').textContent = x.message || 'Code refusé.'; }
