@@ -79,7 +79,10 @@ input[type=checkbox],input[type=radio]{width:18px;height:18px;flex:0 0 auto;marg
     <div><label for="tel">Téléphone (WhatsApp de préférence)</label><input type="tel" id="tel" placeholder="06 12 34 56 78" required></div></div>
     <div class="deux"><div><label for="email">Adresse Gmail</label><input type="email" id="email" readonly required style="opacity:.75"></div><input type="hidden" id="email2"></div>
     <p class="sous">Tes évaluations ne s'ouvriront qu'avec cette adresse Gmail. Ton numéro sert seulement en cas de problème.</p></div>
-  <div class="bloc"><h2><span class="num">2</span>Ton offre</h2><p class="sous" style="margin-bottom:8px">Plusieurs formules t'intéressent ? Préinscris-toi à une formule à la fois : à la fin, un bouton te permet d'ajouter la suivante. Tu peux aussi revenir plus tard : connecte-toi avec la même adresse et le même code.</p><div class="offres" id="offres"><p class="sous">Chargement…</p></div></div>
+  <div class="bloc"><h2><span class="num">2</span>Ton offre</h2><p class="sous" style="margin-bottom:8px">Plusieurs formules t'intéressent ? Préinscris-toi à une formule à la fois : à la fin, un bouton te permet d'ajouter la suivante. Tu peux aussi revenir plus tard : connecte-toi avec la même adresse et le même code.</p><div class="offres" id="offres"><p class="sous">Chargement…</p></div>
+    <div id="zonePromo" style="margin-top:12px"><label for="promo">Tu as un code promo ? (facultatif)</label>
+      <div style="display:flex;gap:8px"><input id="promo" autocomplete="off" style="flex:1;text-transform:uppercase" placeholder="Ton code"><button class="btn" type="button" id="goPromo" style="width:auto;margin:0;padding:10px 16px">Appliquer</button></div>
+      <p class="sous" id="msgPromo" role="status" style="margin-top:6px"></p></div></div>
   <div class="bloc" id="blocChoix" hidden><h2><span class="num">3</span>Ton évaluation</h2>
     <div><label>Ta sélection</label><p class="sous" id="aideSel"></p><div class="choix" id="selection"></div></div>
     <div id="zoneThemes"><label>Les thèmes qui t'intéressent</label><p class="sous">Coche tout ce qui t'intéresse : je te préviens dès la sortie, et pour un pack on suit cet ordre.</p><div class="themes" id="themes"></div></div>
@@ -107,8 +110,20 @@ const run = (f, ...a) => fetch(API, { method: 'POST', headers: { 'Content-Type':
 const euros = n => n.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' });
 let D = null;
 function opt(type, name, value, txt, checked) { const l = document.createElement('label'); const i = document.createElement('input'); i.type = type; i.name = name; i.value = value; if (checked) i.checked = true; l.append(i, document.createTextNode(' ' + txt)); return l; }
+let PROMO = '';
+async function appliquerPromo(silencieux) {
+  const code = $('#promo').value.trim().toUpperCase(), offre = (document.querySelector('input[name="offre"]:checked') || {}).value || '';
+  PROMO = ''; const m = $('#msgPromo'); m.style.color = '';
+  if (!code) { m.textContent = ''; return; }
+  if (!offre) { if (!silencieux) m.textContent = 'Choisis d\'abord ton offre ci-dessus.'; return; }
+  m.textContent = 'Vérification…';
+  try { const r = await run('verifierCodePromo', code, offre);
+    if (r.ok) { PROMO = r.code; m.style.color = '#1e7b34'; m.textContent = '✓ ' + r.message; } else { m.style.color = '#b3261e'; m.textContent = r.message; } }
+  catch (x) { m.style.color = '#b3261e'; m.textContent = 'Vérification impossible pour le moment.'; }
+}
 function choisirOffre(o) {
   $('#blocChoix').hidden = false;
+  if ($('#promo').value.trim()) appliquerPromo(true);
   const dispo = D.dispo.filter(c => c.type === o.type);
   $('#aideSel').textContent = dispo.length ? dispo.length + (dispo.length > 1 ? ' disponibles' : ' disponible') + " aujourd'hui." : 'Rien de disponible pour le moment : je te préviens dès la sortie.';
   const sel = $('#selection'); sel.innerHTML = '';
@@ -153,8 +168,10 @@ $('#fCode').onsubmit = async e => {
   catch (x) { $('#errCode').textContent = x.message || 'Code refusé.'; }
   finally { $('#goCode').disabled = false; }
 };
+$('#goPromo').onclick = () => appliquerPromo(false);
+$('#promo').onkeydown = e => { if (e.key === 'Enter') { e.preventDefault(); appliquerPromo(false); } };
 let SRC = '';
-try { const q = new URLSearchParams(location.search); const c = q.get('code'); if (c) $('#code').value = c; SRC = (q.get('src') || '').toLowerCase().replace(/[^a-z0-9_-]/g, '').slice(0, 40); if (q.has('sans-code') && !c) montrerSans(); } catch (e) {}
+try { const q = new URLSearchParams(location.search); const c = q.get('code'); if (c) $('#code').value = c; const pr = q.get('promo'); if (pr) $('#promo').value = pr.toUpperCase().replace(/[^A-Z0-9_-]/g, '').slice(0, 30); SRC = (q.get('src') || '').toLowerCase().replace(/[^a-z0-9_-]/g, '').slice(0, 40); if (q.has('sans-code') && !c) montrerSans(); } catch (e) {}
 function montrerSans() { $('#fCode').hidden = true; $('#merciSans').hidden = true; $('#fSans').hidden = false; window.scrollTo(0, 0);
   if ($('#sConditions').textContent === 'Chargement…') run('donneesSansCode').catch(() => run('donneesInscription')).then(d => { $('#sConditions').textContent = d.conditions; }).catch(() => { $('#sConditions').textContent = 'Les conditions ne se chargent pas. Recharge la page.'; }); }
 function montrerCode() { $('#fSans').hidden = true; $('#merciSans').hidden = true; $('#fCode').hidden = false; window.scrollTo(0, 0); }
@@ -181,6 +198,8 @@ $('#f').onsubmit = async e => {
   const d = { client: $('#client').value, tel: $('#tel').value, email: $('#email').value, offre: v('offre'), selection: v('sel'),
     themes: [...document.querySelectorAll('input[name="theme"]:checked')].map(x => x.value), suite: $('#zoneSuite').hidden ? '' : v('suite'),
     remarques: $('#remarques').value, debut: $('#debut').value, code: CODE, conditions: $('#cond').checked, accord: $('#accord').checked };
+  if ($('#promo').value.trim() && !PROMO) { await appliquerPromo(false); if (!PROMO) { $('#err').textContent = 'Ton code promo n\'est pas valable pour cette offre : corrige-le ou efface-le.'; return; } }
+  d.codePromo = PROMO;
   $('#go').disabled = true; $('#go').textContent = 'Envoi…';
   try { await run('inscriptionCandidat', d); $('#f').hidden = true; $('#merci').hidden = false; window.scrollTo(0, 0); $('#autreFormule').onclick = () => { $('#merci').hidden = true; $('#f').hidden = false; $('#go').disabled = false; $('#go').textContent = 'Je me préinscris'; document.querySelectorAll('input[name="offre"]:checked').forEach(x => { x.checked = false; x.dispatchEvent(new Event('change', { bubbles: true })); }); window.scrollTo(0, 0); }; }
   catch (x) { $('#err').textContent = x.message || 'Envoi impossible.'; $('#go').disabled = false; $('#go').textContent = "Je me préinscris"; }
