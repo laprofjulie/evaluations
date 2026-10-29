@@ -1,0 +1,14 @@
+# evaluations.laprofjulie.fr sur OVH (29/10/2026)
+Options -Indexes
+DirectoryIndex index.html
+RewriteEngine On
+# Toujours en https
+RewriteCond %{HTTPS} off
+RewriteCond %{HTTP:X-Forwarded-Proto} !https
+RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+# Pages sans cache trop long (les mises à jour s'affichent vite)
+<IfModule mod_headers.c>
+  <FilesMatch "\.html$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+</IfModule>

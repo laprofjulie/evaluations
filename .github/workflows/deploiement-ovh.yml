@@ -1,0 +1,31 @@
+# Met en ligne le site sur l'hébergement OVH à chaque modification (dépôt privé, hébergement OVH : décision du 29/10/2026).
+# Secrets à créer dans GitHub (Settings › Secrets and variables › Actions) :
+#   OVH_FTP_SERVEUR      ex. ftp.cluster0XX.hosting.ovh.net
+#   OVH_FTP_UTILISATEUR  l'identifiant FTP de l'hébergement
+#   OVH_FTP_MOT_DE_PASSE le mot de passe FTP
+#   OVH_FTP_DOSSIER      le dossier du site sur l'hébergement, avec / à la fin, ex. evaluations/
+name: Mise en ligne sur OVH
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+jobs:
+  deploiement:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Envoi FTP vers OVH
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.OVH_FTP_SERVEUR }}
+          username: ${{ secrets.OVH_FTP_UTILISATEUR }}
+          password: ${{ secrets.OVH_FTP_MOT_DE_PASSE }}
+          server-dir: ${{ secrets.OVH_FTP_DOSSIER }}
+          protocol: ftp
+          exclude: |
+            **/.git*
+            **/.git*/**
+            .github/**
+            CNAME
+            .nojekyll
+            README.md
