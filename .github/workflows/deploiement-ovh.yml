@@ -12,9 +12,15 @@ on:
 jobs:
   deploiement:
     runs-on: ubuntu-latest
+    env:
+      SERVEUR: ${{ secrets.OVH_FTP_SERVEUR }}
     steps:
       - uses: actions/checkout@v4
+      - name: Secrets pas encore créés (rien à faire)
+        if: env.SERVEUR == ''
+        run: echo "Secrets OVH absents : mise en ligne ignorée."
       - name: Envoi FTP vers OVH
+        if: env.SERVEUR != ''
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.OVH_FTP_SERVEUR }}
